@@ -15,6 +15,7 @@ As a more advanced use case, this action can also update status API (with succes
 - Wait for the action to execute (~10 seconds)
 
 To set-up this GitHub action in your repository, check out the example workflow description file in .github/workflows/. You can see one set up for the basic use case, and one for the advanced use case.
+Adding a label to the PR if it is fast-forward-able can be done using a github action, see [ff-label.yml](https://github.com/APN-Pucky/metamorph/blob/67d3f9470dc1127c23b81c6b826c8d03bf61d5bc/.github/workflows/ff-label.yml)
 
 ## Permissions
 
@@ -47,8 +48,3 @@ Write permissions for the `GITHUB_TOKEN` are required:
 - Change source code in src/
 - Compile ts to js ```tsc --build tsconfig.json```
 - Commit changes
-
-## Extra
-
-Adding a label to the PR if it is fast-forward-able can be done using a github action, see [ff-label.yml](https://github.com/APN-Pucky/metamorph/blob/67d3f9470dc1127c23b81c6b826c8d03bf61d5bc/.github/workflows/ff-label.yml)
-
