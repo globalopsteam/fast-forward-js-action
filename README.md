@@ -16,6 +16,12 @@ As a more advanced use case, this action can also update status API (with succes
 
 To set-up this GitHub action in your repository, check out the example workflow description file in .github/workflows/. You can see one set up for the basic use case, and one for the advanced use case.
 
+## Permissions
+
+Write permissions for the `GITHUB_TOKEN` are required:
+
+![](media/ff-read-write.png)
+
 ## Inputs
 
 - GITHUB_TOKEN:
