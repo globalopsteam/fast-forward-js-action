@@ -29,7 +29,10 @@ async function run(): Promise<void>{
 
   const ff_status = await fastForward.async_merge_fast_forward(client,set_status);
   await fastForward.async_comment_on_pr(client, comment_messages, ff_status, prod_branch, stage_branch);
-  if(ff_status){}else{core.setFailed(failure_message);}
+  if(ff_status){
+        const ffb = await client.get_pull_request_target_base_async(client.get_current_pull_request_number());
+        core.setOutput("ffbranch", ffb);
+    }else{core.setFailed(failure_message);}
 
 }
 
