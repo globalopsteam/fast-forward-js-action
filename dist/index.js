@@ -43,7 +43,7 @@ async function run() {
     
   const pr = client.get_current_pull_request_number();
         const ffb = await client.get_pull_request_target_base_async(pr);
-        const ffh = await client.get_pull_request_target_head_async(pr);
+        const ffh = await client.get_pull_request_source_head_async(pr);
         core.setOutput("ffbase", ffb);
       core.setOutput("ffhead", ffh);
 }
