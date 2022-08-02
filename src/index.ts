@@ -29,6 +29,7 @@ async function run(): Promise<void>{
 
   const ff_status = await fastForward.async_merge_fast_forward(client,set_status);
   await fastForward.async_comment_on_pr(client, comment_messages, ff_status, prod_branch, stage_branch);
+  if(ff_status){}{core.setFailed(failure_message);}
 
 }
 
