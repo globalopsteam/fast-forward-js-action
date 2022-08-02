@@ -25,11 +25,14 @@ async function run(): Promise<void>{
   const stage_branch = core.getInput('staging_branch') || 'staging';
 
   const client = new GitHubClientWrapper(github.context , github_token);
+  
   const pr = client.get_current_pull_request_number();
+    const pullRequestData =  await this.get_pull_request(pr_number);
         const ffb = await client.get_pull_request_target_base_async(pr);
         const ffh = await client.get_pull_request_source_head_async(pr);
         core.setOutput("ffbase", ffb);
       core.setOutput("ffhead", ffh);
+    core.setOutput("ffsha", pullRequestData.head.sha);
 
 }
 
