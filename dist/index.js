@@ -42,7 +42,7 @@ async function run() {
     const client = new github_client_wrapper_1.GitHubClientWrapper(github.context, github_token);
     
   const pr = client.get_current_pull_request_number();
-    const pullRequestData =  await this.get_pull_request(pr_number);
+    const pullRequestData =  await client.get_pull_request(pr_number);
         const ffb = await client.get_pull_request_target_base_async(pr);
         const ffh = await client.get_pull_request_source_head_async(pr);
         core.setOutput("ffbase", ffb);
