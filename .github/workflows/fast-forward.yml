@@ -1,21 +1,45 @@
-name: Fast-Forward
-
 on: 
   issue_comment:
     types: [created]
-  push:
-  pull_request:
-  # So that the `dirtyLabel` is removed if conflicts are resolve
-  # We recommend `pull_request_target` so that github secrets are available.
-  # In `pull_request` we wouldn't be able to change labels of fork PRs
-  ## pull_request_target:
-  ##   types: [synchronize]
 
 jobs:
-  run:
+  fast_forward_job:
+    name: Fast Forward
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/fast-forward')
     runs-on: ubuntu-latest
     steps:
-      - uses: APN-Pucky/fast-forward-action@main
+      name: Check repository permission for user
+      uses: globalopsteam/action-repository-permission@v1
+      with:
+        required-permission: write
+        reaction-permitted: '+1'
+        reaction-not-permitted: '-1'
+        comment-not-permitted: Sorry, you don't have enough permission to execute `/fast-forward`...
+
+      # To use this repository's private action, you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Basic use case example
+      - name: Fast Forward PR
+        id: ff-action
+        uses:  ./
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SSH_PRIVATE_KEY: ${{ secrets.ACTION_FF }}
+          success_message: 'Success! Fast forwarded ***target_base*** to ***source_head***! ```git checkout target_base && git merge source_head --ff-only``` '
+          failure_message: 'Failed! Cannot do fast forward!'
+
+
+      # Advanced use case example
+      # - name: Fast Forward PR
+      #   id: ff-action
+      #   uses:  ./
+      #   with:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     success_message: 'Success! Fast forwarded ***target_base*** to ***source_head***! ```git checkout target_base && git merge source_head --ff-only``` '
+      #     failure_message: 'Failed! Cannot do fast forward!'
+      #     update_status: true
+      #     failure_message_same_stage_and_prod: 'Failed! Possible reasons: ***1)Your feature branch ```source_head``` is outdated***. You need to rebase ```git checkout source_head && git pull --rebase origin prod_branch && git push --force``` ***2)Review required***, pull-request is not approved ***3)Checks were not successful*** (build status check failed)'
+      #     failure_message_diff_stage_and_prod: 'Failed! Possible reasons: ***1)```stage_branch``` is currently in use***. Another feature validation is ongoing. You need to wait. Later, when integration finishes, you will need to rebase ```git checkout source_head && git pull --rebase origin prod_branch && git push --force``` ***2)Review required***, pull-request is not approved ***3)Checks were not successful*** (build status check failed)'
+      #     production_branch: 'master'
+      #     staging_branch: 'staging'
